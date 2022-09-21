@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
-import "./ShowInfo.css"
-import edit from "../../assets/icons/edit-icon.svg"
-import deleteIcon from "../../assets/icons/delete.svg"
-import api from "../../../src/Api/useAxios"
-
+import api from "../../../src/Api/useAxios";
+import deleteIcon from "../../assets/icons/delete.svg";
+import edit from "../../assets/icons/edit-icon.svg";
+import "./ShowInfo.css";
 
 const ShowInfo = () => {
-
-    
-
-       const [details, setDetails] = useState([]);
-
-       console.log(details);
+   const [details, setDetails] = useState([]);
+   //  const [rerender, setRerender] = useState(0);
+   const [control, setControl] = useState(false);
+   console.log(details);
+   //    useEffect(() => {}, [rerender]);
    /* Fetching Data From Backend */
    useEffect(() => {
       api.get("/todo")
@@ -22,26 +20,28 @@ const ShowInfo = () => {
          .catch((error) => {
             console.error("There was an error!", error);
          });
-   }, []);
+   }, [control]);
 
+  const handleDelete = (id) => {
+    api.post("/todo/delete", { id: id }).then((res)=>{
+        setControl(!control);
+    });
+   }
 
    return (
       <div className="">
-        {
-            details?.map((detail, index)=>{
-                return (
-                   <div key={index} className="py-2">
-                      <div className="card-info container">
-                         <div
-                            className="p-3 d-flex  d-flex justify-content-between"
-                         >
-                            <div>
-                               <h1 className="text-title fw-semibold">
-                                  {detail?.title}
-                               </h1>
-                               <p className="note">{detail?.note}</p>
-                               <p className="start-time">
-                                  {` Start Date:
+         {details?.map((detail, index) => {
+            return (
+               <div key={index} className="py-2">
+                  <div className="card-info container">
+                     <div className="p-3 d-flex  d-flex justify-content-between">
+                        <div>
+                           <h1 className="text-title fw-semibold">
+                              {detail?.title}
+                           </h1>
+                           <p className="note">{detail?.note}</p>
+                           <p className="start-time">
+                              {` Start Date:
                                   ${new Date(detail?.start_date).getDate()} 
                                   ${new Date(detail?.start_date).toLocaleString(
                                      "en-us",
@@ -55,58 +55,62 @@ const ShowInfo = () => {
                                         /([\d]+:[\d]{2})(:[\d]{2})(.*)/,
                                         "$1$3"
                                      )} - ${new Date(
-                                     detail?.end_date
-                                  ).getDate()} 
+                                 detail?.end_date
+                              ).getDate()} 
                                   ${new Date(detail?.end_date).toLocaleString(
                                      "en-us",
                                      { month: "short" }
                                   )} at ${new Date(
-                                     `${detail?.end_date} ${detail?.end_time}`
-                                  )
-                                     .toLocaleTimeString()
-                                     .replace(
-                                        /([\d]+:[\d]{2})(:[\d]{2})(.*)/,
-                                        "$1$3"
-                                     )}`}
-                               </p>
-                            </div>
-                            <div className="d-flex justify-content-center align-items-center">
-                               <div
-                                  style={{
-                                     paddingRight: "15px",
-                                  }}
-                                  className="error pointer"
-                               >
-                                  <input
-                                     style={{
-                                        width: "20px",
-                                        height: "20px",
-                                        marginTop: "10px",
-                                        outline: "2px solid #007BEC",
-                                     }}
-                                     type="checkbox"
-                                     className="pointer"
-                                  ></input>
-                               </div>
-                               <div
-                                  style={{
-                                     paddingRight: "15px",
-                                  }}
-                                  className="pointer"
-                               >
-                                  <img className="" src={edit} alt="" />{" "}
-                               </div>
-                               <div className="pointer">
-                                  <img src={deleteIcon} alt="" />
-                               </div>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                );
-            })
-        }
-       
+                                 `${detail?.end_date} ${detail?.end_time}`
+                              )
+                                 .toLocaleTimeString()
+                                 .replace(
+                                    /([\d]+:[\d]{2})(:[\d]{2})(.*)/,
+                                    "$1$3"
+                                 )}`}
+                           </p>
+                        </div>
+                        <div className="d-flex justify-content-center align-items-center">
+                           <div
+                              style={{
+                                 paddingRight: "15px",
+                              }}
+                              className="error pointer"
+                           >
+                              <input
+                                 style={{
+                                    width: "20px",
+                                    height: "20px",
+                                    marginTop: "10px",
+                                    outline: "2px solid #007BEC",
+                                 }}
+                                 type="checkbox"
+                                 className="pointer"
+                              ></input>
+                           </div>
+                           <div
+                              style={{
+                                 paddingRight: "15px",
+                              }}
+                              className="pointer"
+                           >
+                              <img className="" src={edit} alt="" />{" "}
+                           </div>
+                           <div className="pointer">
+                              <img
+                                 src={deleteIcon}
+                                 alt=""
+                                 onClick={
+                                    () => handleDelete(detail.id)
+                                 }
+                              />
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            );
+         })}
       </div>
    );
 };

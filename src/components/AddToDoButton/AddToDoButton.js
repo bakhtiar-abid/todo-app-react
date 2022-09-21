@@ -11,6 +11,8 @@ const AddToDoButton = () => {
    const [rerender, setRerender] = useState(0);
    const [error, setError] = useState("");
 
+
+
    useEffect(() => {}, [rerender]);
 
    const handleForm = useFormik({
@@ -58,7 +60,7 @@ const AddToDoButton = () => {
                      `New ToDo has been added! `,
                      "success"
                   ).then((res) => {
-                     //   history.push("/dashboard");
+                      window.location.reload();
                   });
                   //    setShow(false);
                   setError("");
