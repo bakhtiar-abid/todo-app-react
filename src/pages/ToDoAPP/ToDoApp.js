@@ -5,7 +5,7 @@ import ShowInfo from './../../components/ShowInfo/ShowInfo';
 
 const ToDoApp = () => {
     return (
-        <div style={{paddingTop: "174px"}} className="container" >
+        <div style={{paddingTop: "174px", paddingBottom: "174px"}} className="container" >
             <AddToDoButton/>
             <ShowInfo/>
         </div>

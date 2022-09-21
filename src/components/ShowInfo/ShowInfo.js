@@ -1,62 +1,110 @@
-import React from "react";
-import { Col, Row } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import "./ShowInfo.css"
 import edit from "../../assets/icons/edit-icon.svg"
 import deleteIcon from "../../assets/icons/delete.svg"
-import checkBox from "../../assets/icons/Necessery Icons.svg"
+import api from "../../../src/Api/useAxios"
+
 
 const ShowInfo = () => {
+
+       const [details, setDetails] = useState([]);
+
+       console.log(details);
+   /* Fetching Data From Backend */
+   useEffect(() => {
+      
+      api.get("/todo")
+         .then((response) => {
+            setDetails(response.data.data);
+         })
+
+         .catch((error) => {
+            console.error("There was an error!", error);
+         });
+   }, []);
+
+
    return (
-      <div className="card-info container">
-         <div className="p-3 d-flex  d-flex justify-content-between">
-            <div>
-               <h1 className="text-title fw-semibold">This is the Title</h1>
-               <p className="note">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Risus
-                  est senectus est...
-               </p>
-               <p className="start-time">
-                  Start Date: 14 Sep at 11:00 AM - 17 Sep at 02:00 PM
-               </p>
-            </div>
-            <div className="d-flex justify-content-center align-items-center">
-               <div
-                  style={{
-                     paddingRight: "15px",
-                  }}
-                  className="error"
-               >
-                  {/* <label className="containerr">
-                     <input type="checkbox"></input>
-                     <span className="checkmark">
-                        <img src={checkBox} alt="" />
-                     </span>
-                  </label> */}
-                  <input
-                     style={{
-                        width: "20px",
-                        height: "20px",
-                        marginTop: "10px",
-                        outline: "2px solid #007BEC",
-                     }}
-                     type="checkbox"
-                     id="vehicle1"
-                     name="vehicle1"
-                     value="Bike"
-                  ></input>
-               </div>
-               <div
-                  style={{
-                     paddingRight: "15px",
-                  }}
-               >
-                  <img className="" src={edit} alt="" />{" "}
-               </div>
-               <div>
-                  <img src={deleteIcon} alt="" />
-               </div>
-            </div>
-         </div>
+      <div className="">
+        {
+            details?.map((detail, index)=>{
+                return (
+                   <div className="py-2">
+                      <div className="card-info container">
+                         <div
+                            key={index}
+                            className="p-3 d-flex  d-flex justify-content-between"
+                         >
+                            <div>
+                               <h1 className="text-title fw-semibold">
+                                  {detail?.title}
+                               </h1>
+                               <p className="note">{detail?.note}</p>
+                               <p className="start-time">
+                                  {` Start Date:
+                                  ${new Date(detail?.start_date).getDate()} 
+                                  ${new Date(detail?.start_date).toLocaleString(
+                                     "en-us",
+                                     { month: "short" }
+                                  )}
+                                  at ${new Date(
+                                     `${detail?.start_date} ${detail?.start_time}`
+                                  )
+                                     .toLocaleTimeString()
+                                     .replace(
+                                        /([\d]+:[\d]{2})(:[\d]{2})(.*)/,
+                                        "$1$3"
+                                     )} - ${new Date(
+                                     detail?.end_date
+                                  ).getDate()} 
+                                  ${new Date(detail?.end_date).toLocaleString(
+                                     "en-us",
+                                     { month: "short" }
+                                  )} at ${new Date(
+                                     `${detail?.end_date} ${detail?.end_time}`
+                                  )
+                                     .toLocaleTimeString()
+                                     .replace(
+                                        /([\d]+:[\d]{2})(:[\d]{2})(.*)/,
+                                        "$1$3"
+                                     )}`}
+                               </p>
+                            </div>
+                            <div className="d-flex justify-content-center align-items-center">
+                               <div
+                                  style={{
+                                     paddingRight: "15px",
+                                  }}
+                                  className="error"
+                               >
+                                  <input
+                                     style={{
+                                        width: "20px",
+                                        height: "20px",
+                                        marginTop: "10px",
+                                        outline: "2px solid #007BEC",
+                                     }}
+                                     type="checkbox"
+                                  ></input>
+                               </div>
+                               <div
+                                  style={{
+                                     paddingRight: "15px",
+                                  }}
+                               >
+                                  <img className="" src={edit} alt="" />{" "}
+                               </div>
+                               <div>
+                                  <img src={deleteIcon} alt="" />
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                );
+            })
+        }
+       
       </div>
    );
 };
