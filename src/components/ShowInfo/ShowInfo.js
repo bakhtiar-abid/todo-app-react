@@ -7,12 +7,13 @@ import api from "../../../src/Api/useAxios"
 
 const ShowInfo = () => {
 
+    
+
        const [details, setDetails] = useState([]);
 
        console.log(details);
    /* Fetching Data From Backend */
    useEffect(() => {
-      
       api.get("/todo")
          .then((response) => {
             setDetails(response.data.data);
@@ -29,10 +30,9 @@ const ShowInfo = () => {
         {
             details?.map((detail, index)=>{
                 return (
-                   <div className="py-2">
+                   <div key={index} className="py-2">
                       <div className="card-info container">
                          <div
-                            key={index}
                             className="p-3 d-flex  d-flex justify-content-between"
                          >
                             <div>
