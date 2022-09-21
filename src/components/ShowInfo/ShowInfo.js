@@ -75,7 +75,7 @@ const ShowInfo = () => {
                                   style={{
                                      paddingRight: "15px",
                                   }}
-                                  className="error"
+                                  className="error pointer"
                                >
                                   <input
                                      style={{
@@ -85,16 +85,18 @@ const ShowInfo = () => {
                                         outline: "2px solid #007BEC",
                                      }}
                                      type="checkbox"
+                                     className="pointer"
                                   ></input>
                                </div>
                                <div
                                   style={{
                                      paddingRight: "15px",
                                   }}
+                                  className="pointer"
                                >
                                   <img className="" src={edit} alt="" />{" "}
                                </div>
-                               <div>
+                               <div className="pointer">
                                   <img src={deleteIcon} alt="" />
                                </div>
                             </div>

@@ -40,3 +40,17 @@
 body{
   background-color: #CACACA;;
 }
+
+.pointer{
+  cursor: pointer;
+}
+
+.addTodo-button{
+  width: 211px;
+height: 48px;
+left: 615px;
+top: 727px;
+
+background: #007BEC;
+border-radius: 10px;
+}
